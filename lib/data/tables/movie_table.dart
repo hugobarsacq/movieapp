@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:movieapp/domain/entities/movie_entity.dart';
+
+import '../../domain/entities/movie_entity.dart';
 
 part 'movie_table.g.dart';
 
@@ -15,9 +16,9 @@ class MovieTable extends MovieEntity {
   final String posterPath;
 
   MovieTable({
-    this.id,
-    this.title,
-    this.posterPath,
+    required this.id,
+    required this.title,
+    required this.posterPath,
   }) : super(
           id: id,
           title: title,

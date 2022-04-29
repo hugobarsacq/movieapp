@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movieapp/di/get_it.dart';
-import 'package:movieapp/presentation/blocs/movie_backdrop/movie_backdrop_cubit.dart';
-import 'package:movieapp/presentation/blocs/movie_carousel/movie_carousel_cubit.dart';
-import 'package:movieapp/presentation/blocs/movie_tabbed/movie_tabbed_cubit.dart';
-import 'package:movieapp/presentation/blocs/search_movie/search_movie_cubit.dart';
-import 'package:movieapp/presentation/journeys/drawer/navigation_drawer.dart';
 
+import '../../../di/get_it.dart';
+import '../../blocs/movie_backdrop/movie_backdrop_cubit.dart';
+import '../../blocs/movie_carousel/movie_carousel_cubit.dart';
+import '../../blocs/movie_tabbed/movie_tabbed_cubit.dart';
+import '../../blocs/search_movie/search_movie_cubit.dart';
 import '../../widgets/app_error_widget.dart';
+import '../drawer/navigation_drawer.dart';
 import 'movie_carousel/movie_carousel_widget.dart';
 import 'movie_tabbed/movie_tabbed_widget.dart';
 
@@ -17,10 +17,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  MovieCarouselCubit movieCarouselCubit;
-  MovieBackdropCubit movieBackdropCubit;
-  MovieTabbedCubit movieTabbedCubit;
-  SearchMovieCubit searchMovieCubit;
+  late MovieCarouselCubit movieCarouselCubit;
+  late MovieBackdropCubit movieBackdropCubit;
+  late MovieTabbedCubit movieTabbedCubit;
+  late SearchMovieCubit searchMovieCubit;
 
   @override
   void initState() {
@@ -35,10 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     super.dispose();
-    movieCarouselCubit?.close();
-    movieBackdropCubit?.close();
-    movieTabbedCubit?.close();
-    searchMovieCubit?.close();
+    movieCarouselCubit.close();
+    movieBackdropCubit.close();
+    movieTabbedCubit.close();
+    searchMovieCubit.close();
   }
 
   @override
@@ -61,7 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         drawer: const NavigationDrawer(),
         body: BlocBuilder<MovieCarouselCubit, MovieCarouselState>(
-          cubit: movieCarouselCubit,
           builder: (context, state) {
             if (state is MovieCarouselLoaded) {
               return Stack(

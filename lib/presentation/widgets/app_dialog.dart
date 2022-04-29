@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:movieapp/common/constants/size_constants.dart';
-import 'package:movieapp/common/constants/translation_constants.dart';
-import 'package:movieapp/common/extensions/size_extensions.dart';
-import 'package:movieapp/common/extensions/string_extensions.dart';
-import 'package:movieapp/presentation/themes/theme_color.dart';
 
+import '../../common/constants/size_constants.dart';
+import '../../common/constants/translation_constants.dart';
+import '../../common/extensions/size_extensions.dart';
+import '../../common/extensions/string_extensions.dart';
 import 'button.dart';
 
 class AppDialog extends StatelessWidget {
   final String title, description, buttonText;
-  final Widget image;
+  final Widget? image;
 
   const AppDialog({
-    Key key,
-    @required this.title,
-    @required this.description,
-    @required this.buttonText,
+    Key? key,
+    required this.title,
+    required this.description,
+    required this.buttonText,
     this.image,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.vulcan,
+      backgroundColor: Theme.of(context).primaryColor,
       elevation: Sizes.dimen_32,
       insetPadding: EdgeInsets.all(Sizes.dimen_32.w),
       shape: RoundedRectangleBorder(
@@ -39,7 +38,7 @@ class AppDialog extends StatelessWidget {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: AppColor.vulcan,
+              color: Theme.of(context).primaryColor,
               blurRadius: Sizes.dimen_16,
             ),
           ],
@@ -59,7 +58,7 @@ class AppDialog extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyText2,
               ),
             ),
-            if (image != null) image,
+            if (image != null) image!,
             Button(
               onPressed: () {
                 Navigator.of(context).pop();

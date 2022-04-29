@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movieapp/common/constants/route_constants.dart';
-import 'package:movieapp/common/constants/size_constants.dart';
-import 'package:movieapp/common/constants/translation_constants.dart';
-import 'package:movieapp/presentation/themes/theme_text.dart';
-import 'package:movieapp/presentation/blocs/login/login_cubit.dart';
-import 'package:movieapp/presentation/journeys/login/label_field_widget.dart';
-import 'package:movieapp/common/extensions/size_extensions.dart';
-import 'package:movieapp/common/extensions/string_extensions.dart';
-import 'package:movieapp/presentation/widgets/button.dart';
+
+import '../../../common/constants/route_constants.dart';
+import '../../../common/constants/size_constants.dart';
+import '../../../common/constants/translation_constants.dart';
+import '../../../common/extensions/size_extensions.dart';
+import '../../../common/extensions/string_extensions.dart';
+import '../../blocs/login/login_cubit.dart';
+import '../../themes/theme_text.dart';
+import '../../widgets/button.dart';
+import 'label_field_widget.dart';
 
 class LoginForm extends StatefulWidget {
+  const LoginForm({Key? key}) : super(key: key);
+
   @override
   _LoginFormState createState() => _LoginFormState();
 }
 
 class _LoginFormState extends State<LoginForm> {
-  TextEditingController _userNameController, _passwordController;
+  late TextEditingController? _userNameController, _passwordController;
   bool enableSignIn = false;
 
   @override
@@ -25,16 +28,16 @@ class _LoginFormState extends State<LoginForm> {
     _userNameController = TextEditingController();
     _passwordController = TextEditingController();
 
-    _userNameController.addListener(() {
+    _userNameController?.addListener(() {
       setState(() {
-        enableSignIn = _userNameController.text.isNotEmpty &&
-            _passwordController.text.isNotEmpty;
+        enableSignIn = (_userNameController?.text.isNotEmpty ?? false) &&
+            (_passwordController?.text.isNotEmpty ?? false);
       });
     });
-    _passwordController.addListener(() {
+    _passwordController?.addListener(() {
       setState(() {
-        enableSignIn = _userNameController.text.isNotEmpty &&
-            _passwordController.text.isNotEmpty;
+        enableSignIn = (_userNameController?.text.isNotEmpty ?? false) &&
+            (_passwordController?.text.isNotEmpty ?? false);
       });
     });
   }
@@ -68,13 +71,15 @@ class _LoginFormState extends State<LoginForm> {
             LabelFieldWidget(
               label: TranslationConstants.username.t(context),
               hintText: TranslationConstants.enterTMDbUsername.t(context),
-              controller: _userNameController,
+              controller: _userNameController!,
+              textFieldKey: const ValueKey('username_text_field_key'),
             ),
             LabelFieldWidget(
               label: TranslationConstants.password.t(context),
               hintText: TranslationConstants.enterPassword.t(context),
-              controller: _passwordController,
+              controller: _passwordController!,
               isPasswordField: true,
+              textFieldKey: const ValueKey('password_text_field_key'),
             ),
             BlocConsumer<LoginCubit, LoginState>(
               buildWhen: (previous, current) => current is LoginError,
@@ -95,16 +100,19 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
             Button(
-              onPressed: enableSignIn
-                  ? () {
-                      BlocProvider.of<LoginCubit>(context).initiateLogin(
-                        _userNameController.text,
-                        _passwordController.text,
-                      );
-                    }
+              onPressed: () => enableSignIn
+                  ? BlocProvider.of<LoginCubit>(context).initiateLogin(
+                      _userNameController?.text ?? '',
+                      _passwordController?.text ?? '',
+                    )
                   : null,
               text: TranslationConstants.signIn,
               isEnabled: enableSignIn,
+            ),
+            Button(
+              onPressed: () =>
+                  BlocProvider.of<LoginCubit>(context).initiateGuestLogin(),
+              text: TranslationConstants.guestSignIn,
             ),
           ],
         ),

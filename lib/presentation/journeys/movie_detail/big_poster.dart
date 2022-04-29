@@ -1,20 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:movieapp/common/constants/size_constants.dart';
-import 'package:movieapp/common/screenutil/screenutil.dart';
-import 'package:movieapp/common/extensions/num_extensions.dart';
-import 'package:movieapp/common/extensions/size_extensions.dart';
-import 'package:movieapp/presentation/journeys/movie_detail/movie_detail_app_bar.dart';
-import 'package:movieapp/presentation/themes/theme_text.dart';
-import 'package:movieapp/data/core/api_constants.dart';
-import 'package:movieapp/domain/entities/movie_detail_entity.dart';
+
+import '../../../common/constants/size_constants.dart';
+import '../../../common/extensions/num_extensions.dart';
+import '../../../common/extensions/size_extensions.dart';
+import '../../../common/screenutil/screenutil.dart';
+import '../../../data/core/api_constants.dart';
+import '../../../domain/entities/movie_detail_entity.dart';
+import '../../themes/theme_text.dart';
+import 'movie_detail_app_bar.dart';
 
 class BigPoster extends StatelessWidget {
   final MovieDetailEntity movie;
 
   const BigPoster({
-    Key key,
-    @required this.movie,
+    Key? key,
+    required this.movie,
   }) : super(key: key);
 
   @override
@@ -47,7 +48,7 @@ class BigPoster extends StatelessWidget {
               style: Theme.of(context).textTheme.headline5,
             ),
             subtitle: Text(
-              movie.releaseDate,
+              movie.releaseDate ?? '',
               style: Theme.of(context).textTheme.greySubtitle1,
             ),
             trailing: Text(

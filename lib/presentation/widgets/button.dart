@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:movieapp/common/constants/size_constants.dart';
-import 'package:movieapp/common/extensions/string_extensions.dart';
-import 'package:movieapp/common/extensions/size_extensions.dart';
-import 'package:movieapp/presentation/themes/theme_color.dart';
+
+import '../../common/constants/size_constants.dart';
+import '../../common/extensions/size_extensions.dart';
+import '../../common/extensions/string_extensions.dart';
+import '../themes/theme_color.dart';
 
 class Button extends StatelessWidget {
   final String text;
-  final Function onPressed;
+  final Function() onPressed;
   final bool isEnabled;
 
   const Button({
-    Key key,
-    @required this.text,
-    @required this.onPressed,
+    Key? key,
+    required this.text,
+    required this.onPressed,
     this.isEnabled = true,
   }) : super(key: key);
 
@@ -34,7 +35,8 @@ class Button extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: Sizes.dimen_16.w),
       margin: EdgeInsets.symmetric(vertical: Sizes.dimen_10.h),
       height: Sizes.dimen_16.h,
-      child: FlatButton(
+      child: TextButton(
+        key: const ValueKey('main_button'),
         onPressed: isEnabled ? onPressed : null,
         child: Text(
           text.t(context),

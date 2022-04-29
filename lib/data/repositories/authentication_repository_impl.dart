@@ -1,12 +1,13 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:movieapp/data/core/unathorised_exception.dart';
-import 'package:movieapp/data/data_sources/authentication_local_data_source.dart';
-import 'package:movieapp/data/data_sources/authentication_remote_data_source.dart';
-import 'package:movieapp/data/models/request_token_model.dart';
-import 'package:movieapp/domain/entities/app_error.dart';
-import 'package:movieapp/domain/repositories/authentication_repository.dart';
+
+import '../../domain/entities/app_error.dart';
+import '../../domain/repositories/authentication_repository.dart';
+import '../core/unathorised_exception.dart';
+import '../data_sources/authentication_local_data_source.dart';
+import '../data_sources/authentication_remote_data_source.dart';
+import '../models/request_token_model.dart';
 
 class AuthenticationRepositoryImpl extends AuthenticationRepository {
   final AuthenticationRemoteDataSource _authenticationRemoteDataSource;
@@ -31,8 +32,9 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   @override
   Future<Either<AppError, bool>> loginUser(Map<String, dynamic> body) async {
     final requestTokenEitherResponse = await _getRequestToken();
-    final token1 =
-        requestTokenEitherResponse.getOrElse(() => null)?.requestToken ?? '';
+    final token1 = requestTokenEitherResponse
+        .getOrElse(() => RequestTokenModel())
+        .requestToken;
 
     try {
       body.putIfAbsent('request_token', () => token1);
@@ -57,10 +59,12 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
   @override
   Future<Either<AppError, void>> logoutUser() async {
     final sessionId = await _authenticationLocalDataSource.getSessionId();
-    await Future.wait([
-      _authenticationRemoteDataSource.deleteSession(sessionId),
-      _authenticationLocalDataSource.deleteSessionId(),
-    ]);
+    if (sessionId != null) {
+      await Future.wait([
+        _authenticationRemoteDataSource.deleteSession(sessionId),
+        _authenticationLocalDataSource.deleteSessionId(),
+      ]);
+    }
     print(await _authenticationLocalDataSource.getSessionId());
     return Right(Unit);
   }

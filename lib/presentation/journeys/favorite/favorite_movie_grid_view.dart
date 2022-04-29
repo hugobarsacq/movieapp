@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:movieapp/common/constants/size_constants.dart';
-import 'package:movieapp/common/extensions/size_extensions.dart';
-import 'package:movieapp/domain/entities/movie_entity.dart';
 
+import '../../../common/constants/size_constants.dart';
+import '../../../common/extensions/size_extensions.dart';
+import '../../../domain/entities/movie_entity.dart';
 import 'favorite_movie_card_widget.dart';
 
 class FavoriteMovieGridView extends StatelessWidget {
   final List<MovieEntity> movies;
 
   const FavoriteMovieGridView({
-    Key key,
-    @required this.movies,
+    Key? key,
+    required this.movies,
   }) : super(key: key);
 
   @override

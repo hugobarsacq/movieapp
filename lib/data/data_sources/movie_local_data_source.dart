@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:movieapp/data/tables/movie_table.dart';
+
+import '../tables/movie_table.dart';
 
 abstract class MovieLocalDataSource {
   Future<void> saveMovie(MovieTable movieTable);
@@ -27,7 +28,10 @@ class MovieLocalDataSourceImpl extends MovieLocalDataSource {
     final movieIds = movieBox.keys;
     List<MovieTable> movies = [];
     movieIds.forEach((movieId) {
-      movies.add(movieBox.get(movieId));
+      final movie = movieBox.get(movieId);
+      if (movie != null) {
+        movies.add(movieBox.get(movieId));
+      }
     });
     return movies;
   }

@@ -1,10 +1,10 @@
-import 'package:movieapp/data/core/api_client.dart';
-import 'package:movieapp/data/models/request_token_model.dart';
+import '../core/api_client.dart';
+import '../models/request_token_model.dart';
 
 abstract class AuthenticationRemoteDataSource {
   Future<RequestTokenModel> getRequestToken();
   Future<RequestTokenModel> validateWithLogin(Map<String, dynamic> requestBody);
-  Future<String> createSession(Map<String, dynamic> requestBody);
+  Future<String?> createSession(Map<String, dynamic> requestBody);
   Future<bool> deleteSession(String sessionId);
 }
 
@@ -34,7 +34,7 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<String> createSession(Map<String, dynamic> requestBody) async {
+  Future<String?> createSession(Map<String, dynamic> requestBody) async {
     final response = await _client.post(
       'authentication/session/new',
       params: requestBody,

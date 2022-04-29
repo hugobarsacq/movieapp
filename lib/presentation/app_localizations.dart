@@ -2,17 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:movieapp/common/constants/languages.dart';
+
+import '../common/constants/languages.dart';
 
 class AppLocalizations {
   final Locale locale;
 
   AppLocalizations(this.locale);
 
-  static AppLocalizations of(context) =>
+  static AppLocalizations? of(context) =>
       Localizations.of<AppLocalizations>(context, AppLocalizations);
 
-  Map<String, String> _localizedStrings;
+  late Map<String, String> _localizedStrings;
 
   Future<bool> load() async {
     final jsonString = await rootBundle
@@ -25,7 +26,7 @@ class AppLocalizations {
     return true;
   }
 
-  String translate(String key) {
+  String? translate(String key) {
     return _localizedStrings[key];
   }
 

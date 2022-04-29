@@ -1,38 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movieapp/common/constants/size_constants.dart';
-import 'package:movieapp/common/constants/translation_constants.dart';
-import 'package:movieapp/common/extensions/size_extensions.dart';
-import 'package:movieapp/common/extensions/string_extensions.dart';
-import 'package:movieapp/di/get_it.dart';
-import 'package:movieapp/presentation/blocs/cast/cast_cubit.dart';
-import 'package:movieapp/presentation/blocs/favorite/favorite_cubit.dart';
-import 'package:movieapp/presentation/blocs/movie_detail/movie_detail_cubit.dart';
-import 'package:movieapp/presentation/blocs/videos/videos_cubit.dart';
-import 'package:movieapp/presentation/journeys/movie_detail/big_poster.dart';
-import 'package:movieapp/presentation/journeys/movie_detail/movie_detail_arguments.dart';
-import 'package:movieapp/presentation/journeys/movie_detail/videos_widget.dart';
 
+import '../../../common/constants/size_constants.dart';
+import '../../../common/constants/translation_constants.dart';
+import '../../../common/extensions/size_extensions.dart';
+import '../../../common/extensions/string_extensions.dart';
+import '../../../di/get_it.dart';
+import '../../blocs/cast/cast_cubit.dart';
+import '../../blocs/favorite/favorite_cubit.dart';
+import '../../blocs/movie_detail/movie_detail_cubit.dart';
+import '../../blocs/videos/videos_cubit.dart';
+import 'big_poster.dart';
 import 'cast_widget.dart';
+import 'movie_detail_arguments.dart';
+import 'videos_widget.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   final MovieDetailArguments movieDetailArguments;
 
   const MovieDetailScreen({
-    Key key,
-    @required this.movieDetailArguments,
-  })  : assert(movieDetailArguments != null, 'arguments must not be null'),
-        super(key: key);
+    Key? key,
+    required this.movieDetailArguments,
+  }) : super(key: key);
 
   @override
   _MovieDetailScreenState createState() => _MovieDetailScreenState();
 }
 
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
-  MovieDetailCubit _movieDetailCubit;
-  CastCubit _castCubit;
-  VideosCubit _videosCubit;
-  FavoriteCubit _favoriteCubit;
+  late MovieDetailCubit _movieDetailCubit;
+  late CastCubit _castCubit;
+  late VideosCubit _videosCubit;
+  late FavoriteCubit _favoriteCubit;
 
   @override
   void initState() {
@@ -46,10 +45,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
 
   @override
   void dispose() {
-    _movieDetailCubit?.close();
-    _castCubit?.close();
-    _videosCubit?.close();
-    _favoriteCubit?.close();
+    _movieDetailCubit.close();
+    _castCubit.close();
+    _videosCubit.close();
+    _favoriteCubit.close();
     super.dispose();
   }
 
@@ -81,7 +80,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         vertical: Sizes.dimen_8.h,
                       ),
                       child: Text(
-                        movieDetail.overview,
+                        movieDetail.overview ?? '',
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ),

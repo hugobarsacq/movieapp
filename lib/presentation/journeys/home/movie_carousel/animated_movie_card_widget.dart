@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movieapp/common/constants/size_constants.dart';
-import 'package:movieapp/common/extensions/size_extensions.dart';
-import 'package:movieapp/common/screenutil/screenutil.dart';
 
+import '../../../../common/constants/size_constants.dart';
+import '../../../../common/extensions/size_extensions.dart';
+import '../../../../common/screenutil/screenutil.dart';
 import 'movie_card_widget.dart';
 
 class AnimatedMovieCardWidget extends StatelessWidget {
@@ -12,11 +12,11 @@ class AnimatedMovieCardWidget extends StatelessWidget {
   final PageController pageController;
 
   const AnimatedMovieCardWidget({
-    Key key,
-    @required this.index,
-    @required this.movieId,
-    @required this.posterPath,
-    @required this.pageController,
+    Key? key,
+    required this.index,
+    required this.movieId,
+    required this.posterPath,
+    required this.pageController,
   }) : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class AnimatedMovieCardWidget extends StatelessWidget {
       builder: (context, child) {
         double value = 1;
         if (pageController.position.haveDimensions) {
-          value = pageController.page - index;
+          value = (pageController.page ?? 0) - index;
           value = (1 - (value.abs() * 0.1)).clamp(0.0, 1.0);
           return Align(
             alignment: Alignment.topCenter,

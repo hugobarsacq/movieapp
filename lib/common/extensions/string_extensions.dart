@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movieapp/presentation/app_localizations.dart';
+
+import '../../presentation/app_localizations.dart';
 
 extension StringExtension on String {
   String intelliTrim() {
@@ -7,6 +8,6 @@ extension StringExtension on String {
   }
 
   String t(BuildContext context) {
-    return AppLocalizations.of(context).translate(this);
+    return AppLocalizations.of(context)?.translate(this) ?? '';
   }
 }

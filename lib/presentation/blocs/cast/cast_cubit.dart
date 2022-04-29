@@ -1,18 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
-import 'package:movieapp/domain/entities/app_error.dart';
-import 'package:movieapp/domain/entities/cast_entity.dart';
-import 'package:movieapp/domain/entities/movie_params.dart';
-import 'package:movieapp/domain/usecases/get_cast.dart';
+
+import '../../../domain/entities/app_error.dart';
+import '../../../domain/entities/cast_entity.dart';
+import '../../../domain/entities/movie_params.dart';
+import '../../../domain/usecases/get_cast.dart';
 
 part 'cast_state.dart';
 
 class CastCubit extends Cubit<CastState> {
   final GetCast getCast;
 
-  CastCubit({@required this.getCast}) : super(CastInitial());
+  CastCubit({required this.getCast}) : super(CastInitial());
 
   void loadCast(int movieId) async {
     Either<AppError, List<CastEntity>> eitherResponse =

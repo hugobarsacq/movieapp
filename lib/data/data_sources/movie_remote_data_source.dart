@@ -1,11 +1,10 @@
-import 'package:movieapp/data/core/api_client.dart';
-import 'package:movieapp/data/models/cast_crew_result_data_model.dart';
-import 'package:movieapp/data/models/movie_detail_model.dart';
-import 'package:movieapp/data/models/movies_result_model.dart';
-import 'package:movieapp/data/models/video_model.dart';
-import 'package:movieapp/data/models/video_result_model.dart';
-
+import '../core/api_client.dart';
+import '../models/cast_crew_result_data_model.dart';
+import '../models/movie_detail_model.dart';
 import '../models/movie_model.dart';
+import '../models/movies_result_model.dart';
+import '../models/video_model.dart';
+import '../models/video_result_model.dart';
 
 abstract class MovieRemoteDataSource {
   Future<List<MovieModel>> getTrending();
@@ -34,6 +33,7 @@ class MovieRemoteDataSourceImpl extends MovieRemoteDataSource {
   Future<List<MovieModel>> getPopular() async {
     final response = await _client.get('movie/popular');
     final movies = MoviesResultModel.fromJson(response).movies;
+    print(movies);
     return movies;
   }
 
@@ -41,6 +41,7 @@ class MovieRemoteDataSourceImpl extends MovieRemoteDataSource {
   Future<List<MovieModel>> getComingSoon() async {
     final response = await _client.get('movie/upcoming');
     final movies = MoviesResultModel.fromJson(response).movies;
+    print(movies);
     return movies;
   }
 
@@ -48,6 +49,7 @@ class MovieRemoteDataSourceImpl extends MovieRemoteDataSource {
   Future<List<MovieModel>> getPlayingNow() async {
     final response = await _client.get('movie/now_playing');
     final movies = MoviesResultModel.fromJson(response).movies;
+    print(movies);
     return movies;
   }
 
@@ -55,7 +57,16 @@ class MovieRemoteDataSourceImpl extends MovieRemoteDataSource {
   Future<MovieDetailModel> getMovieDetail(int id) async {
     final response = await _client.get('movie/$id');
     final movie = MovieDetailModel.fromJson(response);
-    return movie;
+    if (_isValidMovieDetail(movie)) {
+      return movie;
+    }
+    throw Exception();
+  }
+
+  bool _isValidMovieDetail(MovieDetailModel movie) {
+    return movie.id != -1 &&
+        movie.title.isNotEmpty &&
+        movie.posterPath.isNotEmpty;
   }
 
   @override

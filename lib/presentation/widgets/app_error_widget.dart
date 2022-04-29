@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:movieapp/common/constants/size_constants.dart';
-import 'package:movieapp/common/constants/translation_constants.dart';
-import 'package:movieapp/common/extensions/size_extensions.dart';
-import 'package:movieapp/common/extensions/string_extensions.dart';
-import 'package:movieapp/domain/entities/app_error.dart';
 import 'package:wiredash/wiredash.dart';
 
+import '../../common/constants/size_constants.dart';
+import '../../common/constants/translation_constants.dart';
+import '../../common/extensions/size_extensions.dart';
+import '../../common/extensions/string_extensions.dart';
+import '../../domain/entities/app_error.dart';
 import 'button.dart';
 
 class AppErrorWidget extends StatelessWidget {
   final AppErrorType errorType;
-  final Function onPressed;
+  final Function() onPressed;
 
   const AppErrorWidget({
-    Key key,
-    @required this.errorType,
-    @required this.onPressed,
+    Key? key,
+    required this.errorType,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -40,7 +40,7 @@ class AppErrorWidget extends StatelessWidget {
                 text: TranslationConstants.retry,
               ),
               Button(
-                onPressed: () => Wiredash.of(context).show(),
+                onPressed: () => Wiredash.of(context)?.show(),
                 text: TranslationConstants.feedback,
               ),
             ],

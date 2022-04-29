@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movieapp/common/constants/languages.dart';
-import 'package:movieapp/common/constants/route_constants.dart';
-import 'package:movieapp/common/constants/size_constants.dart';
-import 'package:movieapp/common/constants/translation_constants.dart';
-import 'package:movieapp/common/extensions/size_extensions.dart';
-import 'package:movieapp/common/extensions/string_extensions.dart';
-import 'package:movieapp/presentation/blocs/language/language_cubit.dart';
-import 'package:movieapp/presentation/blocs/login/login_cubit.dart';
-import 'package:movieapp/presentation/journeys/drawer/navigation_expanded_list_item.dart';
-import 'package:movieapp/presentation/journeys/drawer/navigation_list_item.dart';
-import 'package:movieapp/presentation/widgets/app_dialog.dart';
-import 'package:movieapp/presentation/widgets/logo.dart';
+import '../../blocs/theme/theme_cubit.dart';
+import '../../themes/theme_color.dart';
 import 'package:wiredash/wiredash.dart';
+
+import '../../../common/constants/languages.dart';
+import '../../../common/constants/route_constants.dart';
+import '../../../common/constants/size_constants.dart';
+import '../../../common/constants/translation_constants.dart';
+import '../../../common/extensions/size_extensions.dart';
+import '../../../common/extensions/string_extensions.dart';
+import '../../blocs/language/language_cubit.dart';
+import '../../blocs/login/login_cubit.dart';
+import '../../widgets/app_dialog.dart';
+import '../../widgets/logo.dart';
+import 'navigation_expanded_list_item.dart';
+import 'navigation_list_item.dart';
 
 class NavigationDrawer extends StatelessWidget {
   const NavigationDrawer();
@@ -53,17 +56,13 @@ class NavigationDrawer extends StatelessWidget {
             NavigationExpandedListItem(
               title: TranslationConstants.language.t(context),
               children: Languages.languages.map((e) => e.value).toList(),
-              onPressed: (index) {
-                BlocProvider.of<LanguageCubit>(context).toggleLanguage(
-                  Languages.languages[index],
-                );
-              },
+              onPressed: (index) => _onLanguageSelected(index, context),
             ),
             NavigationListItem(
               title: TranslationConstants.feedback.t(context),
               onPressed: () {
                 Navigator.of(context).pop();
-                Wiredash.of(context).show();
+                Wiredash.of(context)?.show();
               },
             ),
             NavigationListItem(
@@ -86,14 +85,39 @@ class NavigationDrawer extends StatelessWidget {
                 },
               ),
             ),
+            Spacer(),
+            BlocBuilder<ThemeCubit, Themes>(builder: (context, theme) {
+              return Align(
+                alignment: Alignment.center,
+                child: IconButton(
+                  onPressed: () => context.read<ThemeCubit>().toggleTheme(),
+                  icon: Icon(
+                    theme == Themes.dark
+                        ? Icons.brightness_4_sharp
+                        : Icons.brightness_7_sharp,
+                    color: context.read<ThemeCubit>().state == Themes.dark
+                        ? Colors.white
+                        : AppColor.vulcan,
+                    size: Sizes.dimen_40.w,
+                  ),
+                ),
+              );
+            }),
           ],
         ),
       ),
     );
   }
 
+  void _onLanguageSelected(int index, BuildContext context) {
+    BlocProvider.of<LanguageCubit>(context).toggleLanguage(
+      Languages.languages[index],
+    );
+  }
+
   void _showDialog(BuildContext context) {
     showDialog(
+      context: context,
       builder: (context) => AppDialog(
         title: TranslationConstants.about,
         description: TranslationConstants.aboutDescription,
@@ -103,7 +127,6 @@ class NavigationDrawer extends StatelessWidget {
           height: Sizes.dimen_32.h,
         ),
       ),
-      context: context,
     );
   }
 }

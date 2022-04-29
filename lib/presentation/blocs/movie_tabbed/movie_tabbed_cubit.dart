@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
 import '../../../domain/entities/app_error.dart';
 import '../../../domain/entities/movie_entity.dart';
@@ -20,14 +17,15 @@ class MovieTabbedCubit extends Cubit<MovieTabbedState> {
   final GetComingSoon getComingSoon;
 
   MovieTabbedCubit({
-    @required this.getPopular,
-    @required this.getPlayingNow,
-    @required this.getComingSoon,
+    required this.getPopular,
+    required this.getPlayingNow,
+    required this.getComingSoon,
   }) : super(MovieTabbedInitial());
 
   void movieTabChanged({int currentTabIndex = 0}) async {
     emit(MovieTabLoading(currentTabIndex: currentTabIndex));
-    Either<AppError, List<MovieEntity>> moviesEither;
+    late Either<AppError, List<MovieEntity>> moviesEither;
+    print('before making api call $currentTabIndex');
     switch (currentTabIndex) {
       case 0:
         moviesEither = await getPopular(NoParams());
@@ -45,6 +43,7 @@ class MovieTabbedCubit extends Cubit<MovieTabbedState> {
         errorType: l.appErrorType,
       ),
       (movies) {
+        print('returning state making api call $currentTabIndex');
         return MovieTabChanged(
           currentTabIndex: currentTabIndex,
           movies: movies,
